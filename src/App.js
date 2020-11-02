@@ -1,5 +1,6 @@
 import React from 'react'
 import UserCard from './Components/UserCard';
+import axios from 'axios'
 import './App.css'
 
 
@@ -8,30 +9,34 @@ class App extends React.Component {
     super();
     console.log("cd: App.js: App: constructor-> was ran")
     this.state= {
-      userCard: [],
+      userCard: {},
       userFollowing: [],
     }
   }
 
   componentDidMount() {
-    fetch('https://api.github.com/users/ChadDiaz')
-    .then((res) => res.json())
-    .then((json) => {
-      console.log("cd: App.js: App: CDM: userCard json results", json)
+    axios.get('https://api.github.com/users/ChadDiaz')
+    .then((res) => {
+      console.log('cd: App.js: App: CDM: user data', res)
       this.setState({
-        userCard: json
+        userCard: res.data
       })
-    })
-    fetch('https://api.github.com/users/ChadDiaz/following')
-    .then((res) => res.json())
-    .then((json) => {
-      console.log("cd: App.js: App: CDM: userFollowing results", json)
-    })
-  }  
+    }).catch((err) => console.log("err user data", err.message))
+    axios.get('https://api.github.com/users/ChadDiaz/following')
+    .then((res) => {
+      console.log('cd: App.js: App: CDM: follower data', res)
+      this.setState({userFollowing: res.data})
+    }).catch((err) => console.log('err followers data', err.message))
+  }
+
+
+  
+    
   render() {
     return(
       <div className="App">
-        <UserCard userCard={this.state.userCard} />
+        <h1>React User Card</h1>
+        <UserCard user={this.state.userCard} following={this.state.userFollowing}/>
       </div>
     );
   }
