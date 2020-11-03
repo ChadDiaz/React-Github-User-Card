@@ -8,7 +8,7 @@ import {
   CardSubtitle,
   CardLink,
 } from "reactstrap";
-const UserCard = ({ user, follower }) => {
+const UserCard = ({ user, following }) => {
   return (
     <div>
       <Card>
@@ -19,9 +19,10 @@ const UserCard = ({ user, follower }) => {
           <CardText>{user.bio}</CardText>
           <CardLink href={user.url}>GitHub User Page</CardLink>
         </CardBody>
-      </Card>
-      {follower.map((item, i) => (
-        <>
+      </Card>{" "}
+      <br />
+      <div>
+        {following.map((item, i) => (
           <Card>
             <CardImg
               top
@@ -33,8 +34,8 @@ const UserCard = ({ user, follower }) => {
             <CardSubtitle>User Name: {item.login}</CardSubtitle>
             <CardLink href={item.url}>GitHub User Page</CardLink>
           </Card>
-        </>
-      ))}
+        ))} <br/>
+      </div>
     </div>
   );
 };
